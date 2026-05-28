@@ -1,0 +1,40 @@
+##############################################################
+# Virtual Machine — terraform.tfvars.example
+# Copy to terraform.tfvars and fill in your values
+##############################################################
+
+subscription_id       = "e397652c-2118-4f8c-918d-90f1bdb9bc73"
+tenant_id             = "4c289da7-3e9c-454d-a639-7937e0a84463"
+resource_group_name = "rg-vm-opa-test"
+location            = "eastus"
+prefix              = "opa-vm"
+vm_size             = "Standard_B2s"
+admin_username      = "azureuser"
+ssh_public_key      = "ssh-rsa AAAA...your-public-key..."
+
+tags = {
+  environment = "opa-test"
+  managed_by  = "terraform"
+}
+
+# TC-01: Only these extension types are allowed
+approved_extension_types = [
+  "AADSSHLoginForLinux",
+  "AzureMonitorLinuxAgent",
+  "MicrosoftMonitoringAgent",
+  "DependencyAgentLinux",
+  "AzurePolicyLinux",
+  "LinuxDiagnostic",
+  "OmsAgentForLinux",
+  "CustomScript"
+]
+
+# TC-01: Extensions to actually install — all must be in approved list above
+vm_extensions = [
+  {
+    name                 = "AzureMonitorLinuxAgent"
+    publisher            = "Microsoft.Azure.Monitor"
+    type                 = "AzureMonitorLinuxAgent"
+    type_handler_version = "1.0"
+  }
+]

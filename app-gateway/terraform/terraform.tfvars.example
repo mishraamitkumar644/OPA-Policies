@@ -1,0 +1,24 @@
+##############################################################
+# App Gateway — terraform.tfvars.example
+# Copy to terraform.tfvars and fill in your values
+##############################################################
+
+subscription_id       = "e397652c-2118-4f8c-918d-90f1bdb9bc73"
+tenant_id             = "4c289da7-3e9c-454d-a639-7937e0a84463"
+resource_group_name = "rg-agw-opa-test"
+location            = "eastus"
+prefix              = "opa-test"
+
+# TC-02: Set to true (must be enabled)
+enable_http2 = true
+
+# TC-01: Must be TLSv1_2 or TLSv1_3
+ssl_min_protocol_version = "TLSv1_2"
+
+ssl_cipher_suites = [
+  "TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384",
+  "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256"
+]
+
+# ssl_certificate_data     = "<base64-pfx>"
+# ssl_certificate_password = "<pfx-password>"

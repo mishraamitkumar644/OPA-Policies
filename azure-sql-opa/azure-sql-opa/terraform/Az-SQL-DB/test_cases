@@ -1,0 +1,29 @@
+# TC-01
+C:\Tools\OPA\opa.exe eval --input tfplan.json --data ..\policy\tc01_tde_cmk.rego "data.azure.sql.tc01_tde_cmk.deny"
+
+# TC-02: Data Encryption
+C:\Tools\OPA\opa.exe eval --input tfplan.json --data ..\policy\tc02_data_encryption.rego "data.azure.sql.tc02_data_encryption.deny"
+
+# TC-03: Min TLS
+C:\Tools\OPA\opa.exe eval --input tfplan.json --data ..\policy\tc03_min_tls.rego "data.azure.sql.tc03_min_tls.deny"
+
+# TC-04: Entra Auth
+C:\Tools\OPA\opa.exe eval --input tfplan.json --data ..\policy\tc04_entra_auth.rego "data.azure.sql.tc04_entra_auth.deny"
+
+# TC-05: Auditing
+C:\Tools\OPA\opa.exe eval --input tfplan.json --data ..\policy\tc05_auditing_enabled.rego "data.azure.sql.tc05_auditing_enabled.deny"
+
+# TC-06: Retention
+C:\Tools\OPA\opa.exe eval --input tfplan.json --data ..\policy\tc06_audit_retention.rego "data.azure.sql.tc06_audit_retention.deny"
+
+# TC-07: Public Network
+C:\Tools\OPA\opa.exe eval --input tfplan.json --data ..\policy\tc07_public_network_access.rego "data.azure.sql.tc07_public_network_access.deny"
+
+# TC-08: Firewall
+C:\Tools\OPA\opa.exe eval --input tfplan.json --data ..\policy\tc08_firewall_rules.rego "data.azure.sql.tc08_firewall_rules.deny"
+
+Set-Alias -Name opa -Value "C:\Tools\OPA\opa.exe"
+
+# Phir seedha:
+opa version
+opa eval --input tfplan.json --data ..\policy\tc01_tde_cmk.rego "data.azure.sql.tc01_tde_cmk.deny"
