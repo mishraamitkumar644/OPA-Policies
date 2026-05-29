@@ -1,0 +1,3 @@
+C:\Tools\OPA\opa.exe eval --input tfplan.json --data ..\policy\tc01_approved_extensions.rego "data.azure.vm.tc01_approved_extensions.deny"
+
+C:\Tools\OPA\opa.exe eval --input tfplan.json --data ..\policy\tc02_mfa_identity_access.rego "data.azure.vm.tc02_mfa_identity_access.deny"

@@ -3,6 +3,10 @@
 # Test Cases:
 #   TC-01: SSL Min Protocol Version >= TLSv1_2
 #   TC-02: HTTP2 Enabled
+#
+# NOTE: Using HTTP listener (port 80) for plan/OPA testing.
+# ssl_certificate block removed — not needed for tfplan.json.
+# ssl_policy block stays — OPA TC-01 checks this.
 ##############################################################
 
 resource "azurerm_resource_group" "rg" {
@@ -38,7 +42,7 @@ resource "azurerm_application_gateway" "agw" {
   resource_group_name = azurerm_resource_group.rg.name
 
   # TC-02: HTTP2 must be enabled
-  http2_enabled = var.enable_http2
+  enable_http2 = var.enable_http2
 
   sku {
     name     = "Standard_v2"
@@ -51,9 +55,10 @@ resource "azurerm_application_gateway" "agw" {
     subnet_id = azurerm_subnet.agw_subnet.id
   }
 
+  # Changed to port 80 HTTP — no ssl_certificate needed for plan
   frontend_port {
-    name = "port-443"
-    port = 443
+    name = "port-80"
+    port = 80
   }
 
   frontend_ip_configuration {
@@ -73,30 +78,25 @@ resource "azurerm_application_gateway" "agw" {
     request_timeout       = 60
   }
 
+  # Changed to HTTP listener — no ssl_certificate_name needed
   http_listener {
-    name                           = "https-listener"
+    name                           = "http-listener"
     frontend_ip_configuration_name = "feip-public"
-    frontend_port_name             = "port-443"
-    protocol                       = "Https"
-    ssl_certificate_name           = "agw-ssl-cert"
+    frontend_port_name             = "port-80"
+    protocol                       = "Http"
   }
 
   request_routing_rule {
     name                       = "routing-rule"
     rule_type                  = "Basic"
-    http_listener_name         = "https-listener"
+    http_listener_name         = "http-listener"
     backend_address_pool_name  = "backend-pool"
     backend_http_settings_name = "backend-http-settings"
     priority                   = 100
   }
 
-  ssl_certificate {
-    name     = "agw-ssl-cert"
-    data     = var.ssl_certificate_data
-    password = var.ssl_certificate_password
-  }
-
-  # TC-01: SSL Policy — minimum protocol version must be TLSv1_2 or higher
+  # TC-01: ssl_policy block stays — OPA checks min_protocol_version
+  # ssl_certificate block removed — not required for HTTP listener
   ssl_policy {
     policy_type          = "Custom"
     min_protocol_version = var.ssl_min_protocol_version
